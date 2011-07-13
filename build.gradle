@@ -1,0 +1,44 @@
+apply plugin: "groovy"
+apply plugin: "idea"
+apply plugin: "eclipse"
+
+repositories {
+	mavenCentral()
+}
+
+// The drivers we want to use
+drivers = ["firefox", "chrome"]
+
+dependencies {
+	groovy "org.codehaus.groovy:groovy-all:1.7.5"
+	
+	def gebVersion = "0.6.0"
+	def seleniumVersion = "2.0rc3"
+	
+	testCompile "org.codehaus.geb:geb-spock:$gebVersion"
+	testCompile "org.spockframework:spock-core:0.5-groovy-1.7"
+	
+	// for pdf scraping, not a Geb dependency
+	testCompile "org.apache.pdfbox:pdfbox:1.0.0"
+	
+	drivers.each { driver ->
+		testCompile "org.seleniumhq.selenium:selenium-$driver-driver:$seleniumVersion"
+	}
+}
+
+drivers.each { driver ->
+	task "${driver}Test"(type: Test) {
+		testReportDir = file("$reportsDir/$name/tests")
+		testResultsDir = file("$buildDir/test-results/$name")
+		
+		systemProperty "geb.build.baseUrl", "http://uberconf.com/conference/denver/2011/07/"
+		systemProperty "geb.build.reportsDir", "$reportsDir/$name/geb"
+		systemProperty "geb.env", driver
+	}
+}
+
+task test(overwrite: true, dependsOn: drivers.collect { tasks["${it}Test"] })
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0-milestone-3'
+}
