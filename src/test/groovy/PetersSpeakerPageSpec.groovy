@@ -21,7 +21,7 @@ class PetersSpeakerPageSpec extends GebReportingSpec {
         at SpeakersPage
     }
     
-    def "peter is listed as a speaker"() {
+    def "Peter is listed as a speaker"() {
         when:
         def peter = speakers["Peter Niederwieser"]
     
@@ -32,7 +32,7 @@ class PetersSpeakerPageSpec extends GebReportingSpec {
         peter.bio.contains "Peter is a Principal Software Engineer at Gradleware"
     }
     
-    def "go to peters speaker page"() {
+    def "go to Peter's speaker page"() {
         when:
         speakers["Peter Niederwieser"].nameLink.click()
         
@@ -43,14 +43,14 @@ class PetersSpeakerPageSpec extends GebReportingSpec {
         speakerName == "Peter Niederwieser"
     }
     
-    def "check peter's talks"() {
+    def "check Peter's talks"() {
         expect:
-        presentations[0].title == "Smarter Testing with Spock"
-        presentations[0].description.contains "Next, we will explore some of Spock's extensions"
+        presentations[1].title == "Smarter Testing with Spock"
+        presentations[1].description.contains "Next, we will explore some of Spock's extensions"
         
         and:
-        presentations[1].title == "Functional Web Testing with Geb and Spock"
-        presentations[1].description.contains "In this session, you will learn everything you need to know to start using Geb in your own projects"
+        presentations[2].title == "Functional Web Testing with Geb and Spock"
+        presentations[2].description.contains "In this session, you will learn everything you need to know to start using Geb in your own projects"
     }
     
 }
